@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ titre }}</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{{ btn }}</button>
+</form>
+
+<p>
+  {% if conference %}
+    <a href="{% url 'conference_submissions' conference.pk %}">← Retour à mes soumissions</a>
+  {% endif %}
+</p>
+{% endblock %}
+

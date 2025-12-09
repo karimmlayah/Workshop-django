@@ -1,4 +1,4 @@
-from django.db import models
+﻿from django.db import models
 from django.core.validators import MinLengthValidator
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
@@ -9,7 +9,7 @@ from django.utils import timezone
 def validate_keywords(keywords):
     keywords=[keyword.strip() for keyword in keywords.split(',')]
     if len(keywords)>10:
-        raise ValidationError("Vous ne pouvez pas entrer plus de 10 mots-clés.")
+        raise ValidationError("Vous ne pouvez pas entrer plus de 10 mots-clÃ©s.")
     
 def generate_submission_id():
     import uuid
@@ -22,7 +22,7 @@ class Conference(models.Model):
         validators=[
             RegexValidator(
                 regex=r'^[a-zA-Z\s-]+$',
-                message='Le nom doit contenir uniquement des lettres alphabétiques et des epaces .'
+                message='Le nom doit contenir uniquement des lettres alphabÃ©tiques et des epaces .'
             )
         ]
     )
@@ -43,14 +43,16 @@ class Conference(models.Model):
     updated_at = models.DateTimeField(auto_now=True) #chaque update
     def clean(self):
         if self.end_date < self.start_date:
-            raise ValidationError("La date de fin doit être postérieure à la date de début.")
+            raise ValidationError("La date de fin doit Ãªtre postÃ©rieure Ã  la date de dÃ©but.")
 
 
 class Submission(models.Model):
-    Submission_id = models.AutoField(
+    Submission_id = models.CharField(
         primary_key=True,
         unique=True,
-        editable=False
+        editable=False,
+        max_length=255,
+        default=generate_submission_id,
     )
     title = models.CharField(max_length=255)
     abstract = models.TextField()
@@ -76,9 +78,9 @@ class Submission(models.Model):
     def clean(self):
         today = timezone.now().date()
 
-        # Conférences à venir uniquement
+        # ConfÃ©rences Ã  venir uniquement
         if self.conference.start_date <= today:
-            raise ValidationError("❌ La soumission ne peut être faite que pour des conférences à venir.")
+            raise ValidationError("âŒ La soumission ne peut Ãªtre faite que pour des confÃ©rences Ã  venir.")
 
         # Limite de 3 soumissions par jour
         count_today = Submission.objects.filter(
@@ -87,14 +89,12 @@ class Submission(models.Model):
         ).exclude(pk=self.pk).count()
 
         if count_today >= 3:
-            raise ValidationError("⚠️ Vous ne pouvez pas soumettre à plus de 3 conférences par jour.")
+            raise ValidationError("âš ï¸ Vous ne pouvez pas soumettre Ã  plus de 3 confÃ©rences par jour.")
 
     def save(self, *args, **kwargs):
-        # 🔹 Génère un ID unique si inexistant
-        if not self.Submission_id:
-            self.Submission_id = generate_submission_id()
+        # ðŸ”¹ GÃ©nÃ¨re un ID unique si inexistant
 
-        # 🔹 Valide avant sauvegarde
+        # ðŸ”¹ Valide avant sauvegarde
         self.clean()
         super().save(*args, **kwargs)
 

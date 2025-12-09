@@ -1,0 +1,42 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<h1>Mes soumissions – {{ conference.name }}</h1>
+
+<table border="1">
+    <tr>
+        <td>Titre</td>
+        <td>Statut</td>
+        <td>Utilisateur</td>
+        <td>Conférence</td>
+        <td>Date de soumission</td>
+        <td>Paiement</td>
+        <td>Actions</td>
+    </tr>
+
+    {% for s in submissions %}
+    <tr>
+        <td>{{ s.title }}</td>
+        <td>{{ s.get_status_display }}</td>
+        <td>{{ s.user.get_full_name|default:s.user.username }}</td>
+        <td>{{ s.conference.name }}</td>
+        <td>{{ s.submission_date }}</td>
+        <td>{% if s.payed %}Payé{% else %}Non payé{% endif %}</td>
+        <td>
+          <a href="{% url 'submission_details' s.pk %}">Détails</a>
+          &nbsp;|&nbsp;
+          <a href="{% url 'submission_update' s.pk %}">Modifier</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="7">Aucune soumission trouvée.</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p>
+  <a href="{% url 'submission_add' conference.pk %}">+ Ajouter une soumission</a>
+  &nbsp;|&nbsp;
+  <a href="{% url 'liste_conferences' %}">← Retour aux conférences</a>
+</p>
+{% endblock %}

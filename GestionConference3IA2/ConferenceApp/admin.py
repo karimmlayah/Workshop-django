@@ -1,13 +1,13 @@
-from django.contrib import admin
+﻿from django.contrib import admin
 from .models import Conference, Submission
 
 # Personnalisation du site admin
-admin.site.site_header = "Gestion des conférences"
-admin.site.site_title = "Gestion des conférences 25/26"
+admin.site.site_header = "Gestion des confÃ©rences"
+admin.site.site_title = "Gestion des confÃ©rences 25/26"
 admin.site.index_title = "Bienvenue dans Django App Conference"
 
 
-# Inline pour les soumissions liées à une conférence
+# Inline pour les soumissions liÃ©es Ã  une confÃ©rence
 class SubmissionInline(admin.StackedInline):
     model = Submission
     extra = 1
@@ -24,7 +24,7 @@ class AdminConferenceModel(admin.ModelAdmin):
     date_hierarchy = 'start_date'
 
     fieldsets = (
-        ("Informations générales", {
+        ("Informations gÃ©nÃ©rales", {
             'fields': ('conference_id', 'name', 'theme', 'description')
         }),
         ("Informations logistiques", {
@@ -37,18 +37,18 @@ class AdminConferenceModel(admin.ModelAdmin):
         if objet.start_date and objet.end_date:
             return (objet.end_date - objet.start_date).days
         return "RAS"
-    A.short_description = "Durée (en jours)"
+    A.short_description = "DurÃ©e (en jours)"
 
     inlines = [SubmissionInline]
 
 
-# Actions personnalisées
-@admin.action(description="Marquer les soumissions comme payées")
+# Actions personnalisÃ©es
+@admin.action(description="Marquer les soumissions comme payÃ©es")
 def mark_as_payed(modeladmin, req, queryset):
     queryset.update(payed=True)
 
 
-@admin.action(description="Marquer comme acceptées")
+@admin.action(description="Marquer comme acceptÃ©es")
 def mark_as_accepted(m, rq, q):
     q.update(status="accepted")
 
@@ -58,8 +58,8 @@ def mark_as_accepted(m, rq, q):
 class SubmissionAdmin(admin.ModelAdmin):
     list_display = ("title", "status","user", "payed", "submission_date")
     fieldsets = (
-        ("Informations générales", {
-            "fields": ("title", "abstract", "keywords")
+        ("Informations gÃ©nÃ©rales", {
+            "fields": ("title", "abstract", "keyword")
         }),
         ("Document", {
             "fields": ("paper", "user", "conference")
@@ -69,3 +69,4 @@ class SubmissionAdmin(admin.ModelAdmin):
         })
     )
     actions = [mark_as_payed, mark_as_accepted]
+

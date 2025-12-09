@@ -1,0 +1,11 @@
+{
+  "servers": {
+    "conference-assistant": {
+      "type": "stdio",
+      "command": "C:\\Users\\Mega-PC\\Desktop\\workshop\\venv\\Scripts\\python.exe",
+      "args": [
+        "C:\\Users\\Mega-PC\\Desktop\\workshop\\GestionConference3IA2\\mcp_server.py"
+      ]
+    }
+  }
+}

@@ -7,8 +7,15 @@
 <p><strong>Date de début :</strong> {{ conference.start_date }}</p>
 <p><strong>Date de fin :</strong> {{ conference.end_date }}</p>
 <p><strong>Description :</strong> {{ conference.description }}</p>
-<p><strong>Lieu :</strong> {{ conference.lieu }}</p>
+<p><strong>Lieu :</strong> {{ conference.location }}</p>
 
-<a href="{% url 'liste_conferences' %}">← Retour à la liste</a>
+<p>
+  <a href="{% url 'liste_conferences' %}">← Retour à la liste</a>
+  |
+  <a href="{% url 'conference_submissions' conference.pk %}">Mes soumissions</a>
+  |
+  <a href="{% url 'conference_update' conference.pk %}">Modifier</a>
+</p>
 
 {% endblock %}
+
